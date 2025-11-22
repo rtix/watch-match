@@ -1,15 +1,37 @@
 <template>
   <div>
     <app-header/>
-    <slot />
-    <app-footer/>
+    <div class="content">
+      <slot />
+    </div>
+    <!-- <app-footer/> -->
   </div>
 </template>
 
-<script lang="ts" setup>
+<style scoped>
+.content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 0.5rem;
+}
 
-</script>
+@media (max-width: 600px) {
+  .content {
+    /* padding: 0 15px; */
+  }
+}
 
-<style>
+/* Medium devices (tablets) */
+@media (min-width: 601px) and (max-width: 900px) {
+  .content {
+    max-width: 700px;
+  }
+}
 
+/* Large devices (desktop) */
+@media (min-width: 901px) {
+  .content {
+    max-width: 900px;
+  }
+}
 </style>

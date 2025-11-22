@@ -1,2 +1,10 @@
 :root {
+    --text-color--hsl: 210, 40%, 94%;
+    --text-color: hsl(var(--text-color--hsl));
+
+    --background-color--hsl: 214, 28%, 5%;
+    --background-color: hsl(var(--background-color--hsl));
+
+    --accent-color--hsl: 53, 38%, 58%;
+    --accent-color: hsl(var(--accent-color--hsl));
 }
