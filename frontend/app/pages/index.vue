@@ -10,13 +10,20 @@
         <template #trigger>
           <ui-button>Join</ui-button>
         </template>
-        <ui-pin-input/>
+        <ui-pin-input @complete="tryJoiningRoom" />
       </ui-modal>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const router = useRouter();
+
+function tryJoiningRoom(id: string) {
+  console.log(`Let me in ${id}!`);
+  // Check if exists
+  router.push({ name: "room-id", params: { id } })
+}
 </script>
 
 <style scoped>

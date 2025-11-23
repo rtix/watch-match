@@ -1,15 +1,30 @@
 <template>
-  <PinInput.Root>
-    <PinInput.Label><h2>Enter room code:</h2></PinInput.Label>
+  <PinInput.Root placeholder="" auto-focus @value-complete="handleComplete">
+    <PinInput.Label>
+      <h2>Enter room code:</h2>
+    </PinInput.Label>
     <PinInput.Control class="pin-input__control">
-      <PinInput.Input v-for="id in [0, 1, 2 ,3]" :key="id" :index="id" class="pin-input__input"/>
+      <PinInput.Input
+        v-for="id in [0, 1, 2, 3]"
+        :key="id"
+        :index="id"
+        class="pin-input__input"
+      />
     </PinInput.Control>
     <PinInput.HiddenInput />
   </PinInput.Root>
 </template>
 
 <script setup lang="ts">
-import { PinInput } from '@ark-ui/vue/pin-input'
+import { PinInput } from "@ark-ui/vue/pin-input";
+
+function handleComplete({ valueAsString }: { valueAsString: string }) {
+  emit("complete", valueAsString);
+}
+
+const emit = defineEmits<{
+  complete: [pin: string];
+}>();
 </script>
 
 <style scoped>

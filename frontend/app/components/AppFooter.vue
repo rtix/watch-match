@@ -4,15 +4,11 @@
   </footer>
 </template>
 
-<script lang="ts" setup>
-
-</script>
+<script lang="ts" setup></script>
 
 <style>
-
 .footer {
   text-align: center;
   border-top: 1px solid black;
 }
-
 </style>

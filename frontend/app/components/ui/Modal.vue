@@ -1,6 +1,6 @@
 <template>
   <div v-if="hasTrigger" @click="toggleOpen">
-    <slot name="trigger"/>
+    <slot name="trigger" />
   </div>
 
   <Teleport to="#teleports">
@@ -21,7 +21,7 @@ const slots = useSlots();
 const hasTrigger = Boolean(slots.trigger);
 const isOpened = ref(!hasTrigger);
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close", "open"]);
 
 const closeOnOverlayClick = ({ currentTarget, target }: MouseEvent) => {
   if (target === currentTarget) {
@@ -30,15 +30,17 @@ const closeOnOverlayClick = ({ currentTarget, target }: MouseEvent) => {
 };
 
 function toggleOpen() {
-  isOpened.value = !isOpened.value;
   if (isOpened.value) {
     emit("close", null);
+  } else {
+    emit("open", null);
   }
+  isOpened.value = !isOpened.value;
 }
 
 onKeyStroke(
   "Escape",
-  e => {
+  (e) => {
     if (!isOpened.value) {
       return;
     }
@@ -46,7 +48,7 @@ onKeyStroke(
     e.preventDefault();
     toggleOpen();
   },
-  { eventName: "keydown", dedupe: true },
+  { eventName: "keydown", dedupe: true }
 );
 </script>
 

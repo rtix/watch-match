@@ -4,14 +4,11 @@
   </header>
 </template>
 
-<script lang="ts" setup>
-
-</script>
+<script lang="ts" setup></script>
 
 <style>
 .header {
   text-align: center;
   border-bottom: 1px black solid;
 }
-
 </style>

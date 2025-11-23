@@ -1,6 +1,6 @@
 <template>
   <button class="button" :checked.attr="checked">
-    <slot/>
+    <slot />
   </button>
 </template>
 
