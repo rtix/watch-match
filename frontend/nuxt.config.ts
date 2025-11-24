@@ -4,4 +4,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/eslint", "@nuxt/icon", "@vueuse/nuxt"],
   css: ["modern-normalize/modern-normalize.css", "~/assets/css/main.css"],
+  runtimeConfig: {
+    public: {
+      mockBackend: process.env.MOCK_BACKEND === "true",
+    },
+  },
 });
