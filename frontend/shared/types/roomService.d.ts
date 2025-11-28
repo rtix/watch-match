@@ -1,3 +1,8 @@
+export interface IRoom {
+  id: string;
+  creatorId: string;
+}
+
 export interface IRoomService {
-  getRoom(id: string): Promise<{ id: string } | null>;
+  createRoom(userId: string): Promise<IRoom>;
 }

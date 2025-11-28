@@ -1,10 +1,16 @@
-import type { IRoomService } from "~~/shared/types/roomService";
+import type { IRoom, IRoomService } from "~~/shared/types/roomService";
 
 export class RoomService implements IRoomService {
-  constructor() {
-    throw Error("Not implemented service.");
-  }
-  async getRoom(id: string) {
-    return { id };
+  async createRoom(userId: string) {
+    return await $fetch<IRoom>(
+      `${useRuntimeConfig().public.apiBase}/api/room`,
+      {
+        method: "POST",
+        body: JSON.stringify(userId),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   }
 }

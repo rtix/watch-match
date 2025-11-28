@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       mockBackend: process.env.MOCK_BACKEND === "true",
+      apiBase: process.env.API_BASE || "http://localhost:5099",
     },
   },
 });

@@ -5,4 +5,6 @@
 <script setup>
 const route = useRoute();
 const roomId = route.params.id;
+
+const _ = useRoomConnection(roomId);
 </script>
