@@ -1,6 +1,14 @@
 @WatchMatchApi_HostAddress = http://localhost:5099
 
-GET {{WatchMatchApi_HostAddress}}/weatherforecast/
+POST {{WatchMatchApi_HostAddress}}/api/room/
 Accept: application/json
+Content-Type: application/json
 
+"testId"
 ###
+
+GET https://localhost:7272/api/room/
+Accept: application/json
+Content-Type: application/json
+
+"testId"
