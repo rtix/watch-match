@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="WatchMatchApi.Tests/WatchMatchApi.Tests.csproj" Id="d7165912-bd55-4414-a2e3-0e4898009a8c" />
+  <Project Path="WatchMatchApi/WatchMatchApi.csproj" />
+</Solution>
