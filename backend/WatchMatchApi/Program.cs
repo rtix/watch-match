@@ -22,6 +22,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
+builder.Services.AddSingleton<MovieService>();
 builder.Services.AddSingleton<RoomService>();
 builder.Services.AddSingleton(new DelayedActionScheduler(TimeSpan.FromSeconds(30)));
 builder.Services.AddSingleton<GroupTrackerService>();
