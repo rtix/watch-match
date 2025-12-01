@@ -4,11 +4,11 @@
     using WatchMatchApi.Services;
     using Xunit;
 
-    public class MovieServiceIntegrationTests
+    public class MovieServiceTests
     {
         private readonly IConfiguration _config;
 
-        public MovieServiceIntegrationTests()
+        public MovieServiceTests()
         {
             _config = new ConfigurationBuilder()
                 .AddUserSecrets<Program>()

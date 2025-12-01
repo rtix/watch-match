@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
 using WatchMatchApi.Services;
 
@@ -13,7 +14,7 @@ namespace WatchMatchApi.Controllers
         private readonly MovieService _movieService = movieService;
 
         [HttpGet]
-        public async Task<List<SearchMovie>> Get() 
+        public async Task<List<Movie>> Get() 
         {
             var movies = await _movieService.DiscoverRandomMovies();
             return movies;
