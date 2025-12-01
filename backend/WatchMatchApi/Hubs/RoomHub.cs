@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using WatchMatchApi.Exceptions;
+using WatchMatchApi.Models;
 using WatchMatchApi.Services;
 
 namespace WatchMatchApi.Hubs
@@ -23,14 +25,23 @@ namespace WatchMatchApi.Hubs
                 AbortConnection("No user ID.");
                 return;
             }
-
-            if (RoomId == null || !_roomService.RoomExists(RoomId))
+            if (RoomId == null)
             {
-                AbortConnection("Room does not exist.");
+                AbortConnection("No room ID.");
                 return;
             }
 
-            var room = _roomService.GetOrSignRoomIfAvailable(RoomId, UserId);
+            Room? room;
+            try
+            {
+                room = _roomService.GetOrSignRoomIfAvailable(RoomId, UserId);
+            }
+            catch (RoomNotFoundException)
+            {
+                AbortConnection("Room not found.");
+                return;
+            }
+
             if (room == null)
             {
                 AbortConnection("No access to room.");
@@ -41,13 +52,13 @@ namespace WatchMatchApi.Hubs
             {
                 _roomService.ConnectUserToRoom(Context.ConnectionId, RoomId);
             }
-            catch (Exception ex) 
+            catch 
             {
-                AbortConnection(ex.Message);
+                AbortConnection("Try later.");
                 return;
             }
 
-            await Clients.Caller.ReceiveMessage(room.ToString());
+            await Clients.Caller.ReceiveMessage(room.Id);
             await base.OnConnectedAsync();
         }
 

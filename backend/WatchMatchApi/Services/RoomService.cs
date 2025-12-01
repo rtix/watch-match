@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using WatchMatchApi.Exceptions;
 using WatchMatchApi.Models;
 
 namespace WatchMatchApi.Services
@@ -19,7 +20,14 @@ namespace WatchMatchApi.Services
             _logger = logger;
             _groupTrackerService = groupTrackerService;
 
-            _groupTrackerService.GroupDeleted += groupId => RemoveRoom(groupId);
+            _groupTrackerService.GroupDeleted += groupId =>
+            {
+                RemoveRoom(groupId);
+                if (_logger.IsEnabled(LogLevel.Debug))
+                {
+                    _logger.LogDebug("Room {groupId} is deleted", groupId);
+                }
+            };
         }
 
         public void DisconnectUserFromRoom(string userId, string roomId)
@@ -75,12 +83,7 @@ namespace WatchMatchApi.Services
 
         public Room? GetOrSignRoomIfAvailable(string roomId, string guestId)
         {
-            Room? room = GetRoom(roomId);
-
-            if (room == null)
-            {
-                return null;
-            }
+            Room? room = GetRoom(roomId) ?? throw new RoomNotFoundException(roomId);
 
             if (room.CreatorId != guestId)
             {

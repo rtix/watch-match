@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TMDbLib.Objects.Movies;
-using TMDbLib.Objects.Search;
+using WatchMatchApi.Exceptions;
 using WatchMatchApi.Services;
 
 namespace WatchMatchApi.Controllers
@@ -20,8 +20,27 @@ namespace WatchMatchApi.Controllers
             return movies;
         }
 
+        [HttpPatch("{roomId}/users")]
+        public IActionResult Patch(string roomId, [FromBody] string userId)
+        {
+            try
+            {
+                var room = _roomService.GetOrSignRoomIfAvailable(roomId, userId);
+
+                if (room == null)
+                {
+                    return StatusCode(403); // Forbid
+                }
+            }
+            catch (RoomNotFoundException)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
         [HttpPost]
-        public object Post([FromBody] string creatorId)
+        public ActionResult<string> Post([FromBody] string creatorId)
         {
             try
             {
@@ -32,7 +51,7 @@ namespace WatchMatchApi.Controllers
                     {
                         _logger.LogDebug("{roomId} created by {creatorId}", room.Id, creatorId);
                     }
-                    return Ok(room);
+                    return Ok(room.Id);
                 }
             }
             catch {}
