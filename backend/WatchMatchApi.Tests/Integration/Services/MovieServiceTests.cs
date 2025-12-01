@@ -1,9 +1,8 @@
-﻿namespace WatchMatchApi.Tests.Integration.Services
-{
-    using Microsoft.Extensions.Configuration;
-    using WatchMatchApi.Services;
-    using Xunit;
+﻿using Microsoft.Extensions.Configuration;
+using WatchMatchApi.Services;
 
+namespace WatchMatchApi.Tests.Integration.Services
+{
     public class MovieServiceTests
     {
         private readonly IConfiguration _config;
@@ -22,11 +21,18 @@
         public async Task DiscoverRandomMovies_ReturnsMovieResults()
         {
             var service = new MovieService(_config);
+            const int numberOfMovies = 5;
 
-            var movies = await service.DiscoverRandomMovies();
+            var movies = await service.DiscoverRandomMovies(numberOfMovies);
 
-            Assert.NotEmpty(movies);
-            Assert.All(movies, m => Assert.False(string.IsNullOrWhiteSpace(m.Title)));
+            Assert.NotNull(movies);
+            Assert.Equal(numberOfMovies, movies.Count);
+
+            Assert.All(movies, m =>
+            { 
+
+                Assert.False(string.IsNullOrWhiteSpace(m.Title));
+            });
         }
     }
 }

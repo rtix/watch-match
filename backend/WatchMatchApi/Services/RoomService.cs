@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using WatchMatchApi.Models;
 
 namespace WatchMatchApi.Services
