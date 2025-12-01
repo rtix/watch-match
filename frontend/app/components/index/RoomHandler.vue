@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 const router = useRouter();
-const { $roomService } = useNuxtApp();
+const { $roomService, $guestId } = useNuxtApp();
 const roomHandlerPinInput = useTemplateRef("room-handler__pin-input");
 const errorMessage = ref("");
 
@@ -30,10 +30,10 @@ function resetErrorMessage() {
 }
 
 async function tryJoiningRoom(id: string) {
-  const room = await $roomService.getRoom(id);
-  if (room === null) {
+  const room = await $roomService.signToRoom(id, $guestId);
+  if (!room) {
     roomHandlerPinInput.value?.clear();
-    errorMessage.value = "Room not found";
+    errorMessage.value = "Wrong code or full";
     return;
   }
   router.push({ name: "room-id", params: { id } });

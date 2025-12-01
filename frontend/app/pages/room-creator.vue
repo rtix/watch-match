@@ -11,9 +11,9 @@ const router = useRouter();
 
 async function createRoom() {
   try {
-    const room = await app.$roomService.createRoom(app.$guestId);
-    if (room.id) {
-      router.push(`/room/${room.id}`);
+    const roomId = await app.$roomService.createRoom(app.$guestId);
+    if (roomId) {
+      router.push(`/room/${roomId}`);
     }
   } catch {
     console.log("Failed to create room.");
