@@ -1,32 +1,35 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Concurrent;
+using System.ComponentModel.DataAnnotations;
 
 namespace WatchMatchApi.Models
 {
+    public class RoomUserData
+    {
+        public bool IsCreator { get; init; } = false;
+    }
+
     public class Room
     {
-        private string? _guestId;
+        private readonly ConcurrentDictionary<string, RoomUserData> _users = new();
+        private readonly int _capacity;
 
-        [RegularExpression("^[a-zA-Z0-9]{4}$", ErrorMessage = "Invalid room id.")]
-        public required string Id { get; init; }
+        [RegularExpression("^[a-zA-Z0-9]{4}$", ErrorMessage = "Invalid room id")]
+        public string Id { get; init; }
 
-        [MinLength(1, ErrorMessage = "Creator ID cannot be empty.")]
-        public required string CreatorId { get; init; }
-
-        [MinLength(1, ErrorMessage = "Guest ID cannot be empty.")]
-        public string? GuestId
+        public Room(string roomId, string creatorId, int capacity = 2)
         {
-            get => _guestId;
-            set 
-            {
-                if (_guestId != null)
-                {
-                    throw new InvalidOperationException("Guest ID is already defined.");
-                }
-                _guestId = value;
-            }
+            Id = roomId;
+            _capacity = capacity;
+            _users.TryAdd(creatorId, new RoomUserData { IsCreator = true });
         }
 
-        public bool IsFull => GuestId != null;
-        public override string ToString() => $"{Id} : {CreatorId} : {GuestId}";
+        public bool TryAddUser(string userId)
+        {
+            var user = new RoomUserData();
+            return _users.TryAdd(userId, user);
+        }
+
+        public bool ContainsUser(string userId) => _users.ContainsKey(userId);
+        public bool IsFull => _users.Count >= _capacity;
     }
 }

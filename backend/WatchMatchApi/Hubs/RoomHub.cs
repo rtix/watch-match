@@ -34,7 +34,7 @@ namespace WatchMatchApi.Hubs
             Room? room;
             try
             {
-                room = _roomService.GetOrSignRoomIfAvailable(RoomId, UserId);
+                room = _roomService.TryGetSignRoom(RoomId, UserId);
             }
             catch (RoomNotFoundException)
             {

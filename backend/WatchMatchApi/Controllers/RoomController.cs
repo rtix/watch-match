@@ -25,7 +25,7 @@ namespace WatchMatchApi.Controllers
         {
             try
             {
-                var room = _roomService.GetOrSignRoomIfAvailable(roomId, userId);
+                var room = _roomService.TryGetSignRoom(roomId, userId);
 
                 if (room == null)
                 {

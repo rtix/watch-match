@@ -71,7 +71,7 @@ namespace WatchMatchApi.Services
         public Room? CreateRoom(string creatorId)
         {
             string roomCode = GenerateRoomCode();
-            Room room = new() { CreatorId = creatorId, Id = roomCode };
+            var room = new Room(roomCode, creatorId);
             bool ok = _rooms.TryAdd(roomCode, room);
             if (ok)
             {
@@ -81,20 +81,23 @@ namespace WatchMatchApi.Services
             return null;
         }
 
-        public Room? GetOrSignRoomIfAvailable(string roomId, string guestId)
+        public Room? TryGetSignRoom(string roomId, string guestId)
         {
             Room? room = GetRoom(roomId) ?? throw new RoomNotFoundException(roomId);
 
-            if (room.CreatorId != guestId)
+            if (!room.ContainsUser(guestId))
             {
-                lock (room)
-                {
-                    room.GuestId ??= guestId;
-                }
-
-                if (room.GuestId != guestId)
+                if (room.IsFull)
                 {
                     return null;
+                }
+                else
+                {
+                    var hasSignedIn = room.TryAddUser(guestId);
+                    if (!hasSignedIn)
+                    {
+                        return null;
+                    }
                 }
             }
 
