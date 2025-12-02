@@ -16,7 +16,7 @@ namespace WatchMatchApi.Controllers
         [HttpGet]
         public async Task<List<Movie>> Get() 
         {
-            var movies = await _movieService.DiscoverRandomMovies();
+            var movies = await _movieService.DiscoverRandomMoviesAsync();
             return movies;
         }
 

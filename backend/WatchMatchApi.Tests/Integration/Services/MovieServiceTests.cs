@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using WatchMatchApi.ApiClients;
 using WatchMatchApi.Services;
 
 namespace WatchMatchApi.Tests.Integration.Services
@@ -20,10 +22,11 @@ namespace WatchMatchApi.Tests.Integration.Services
         [Fact]
         public async Task DiscoverRandomMovies_ReturnsMovieResults()
         {
-            var service = new MovieService(_config);
+            var tmdbApi = new TMDbApi(new MemoryCache(new MemoryCacheOptions()), _config);
+            var service = new MovieService(tmdbApi);
             const int numberOfMovies = 5;
 
-            var movies = await service.DiscoverRandomMovies(numberOfMovies);
+            var movies = await service.DiscoverRandomMoviesAsync(numberOfMovies);
 
             Assert.NotNull(movies);
             Assert.Equal(numberOfMovies, movies.Count);

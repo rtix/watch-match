@@ -26,7 +26,7 @@ namespace WatchMatchApi.Models
             }
         }
 
-        public bool IsFull => CreatorId != null && GuestId != null;
+        public bool IsFull => GuestId != null;
         public override string ToString() => $"{Id} : {CreatorId} : {GuestId}";
     }
 }

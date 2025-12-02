@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Caching.Memory;
+using WatchMatchApi.ApiClients;
 using WatchMatchApi.Hubs;
 using WatchMatchApi.Services;
 
@@ -19,10 +21,17 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
-builder.Services.AddSingleton<MovieService>();
+builder.Services.AddSingleton<TMDbApi>(sp =>
+{
+    var cache = sp.GetRequiredService<IMemoryCache>();
+    var config = sp.GetRequiredService<IConfiguration>();
+    return new TMDbApi(cache, config);
+});
+builder.Services.AddTransient<MovieService>();
 builder.Services.AddSingleton<RoomService>();
 builder.Services.AddSingleton(new DelayedActionScheduler(TimeSpan.FromSeconds(30)));
 builder.Services.AddSingleton<GroupTrackerService>();
