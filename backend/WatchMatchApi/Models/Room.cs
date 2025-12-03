@@ -33,7 +33,15 @@ namespace WatchMatchApi.Models
         public bool TryAddUser(string userId)
         {
             var user = new RoomUserData();
-            return _users.TryAdd(userId, user);
+            if (_users.TryAdd(userId, user))
+            {
+                foreach (var movieId in _likedMovies.Keys)
+                {
+                    user.ReactionDebt.TryAdd(movieId, 0);
+                }
+                return true;
+            }
+            return false;
         }
 
         public bool ContainsUser(string userId) => _users.ContainsKey(userId);
