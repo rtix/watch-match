@@ -1,7 +1,4 @@
-﻿using TMDbLib.Client;
-using TMDbLib.Objects.General;
-using TMDbLib.Objects.Search;
-using TMDbLib.Objects.Movies;
+﻿using TMDbLib.Objects.Movies;
 using WatchMatchApi.ApiClients;
 
 namespace WatchMatchApi.Services
@@ -9,8 +6,14 @@ namespace WatchMatchApi.Services
     public class MovieService(TMDbApi tmdbApi)
     {
         private readonly TMDbApi _api = tmdbApi;
+        public const int DEFAULT_DISCOVER_SIZE = 10;
 
-        public async Task<List<Movie>> DiscoverRandomMoviesAsync(int moviesCount=10)
+        public async Task<Movie> GetMovieAsync(int movieId)
+        {
+            return await _api.GetMovieAsync(movieId);
+        }
+
+        public async Task<List<Movie>> DiscoverRandomMoviesAsync(int moviesCount=DEFAULT_DISCOVER_SIZE)
         {
             Movie[] randomMovies = new Movie[moviesCount];
             var maxPages = Math.Min(_api.DiscoverMoviesAsync(1).Result.TotalPages, TMDbApi.MAX_PAGES_LIMIT);

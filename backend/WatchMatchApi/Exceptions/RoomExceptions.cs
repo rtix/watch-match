@@ -4,4 +4,7 @@
     {
     }
 
+    public class UserNotInTheRoomException(string userId, string roomId) : Exception($"User {userId} not in the room {roomId}")
+    {
+    }
 }

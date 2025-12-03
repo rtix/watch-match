@@ -23,7 +23,10 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.AddFilter<RoomHubFilter>();
+});
 
 builder.Services.AddSingleton<TMDbApi>(sp =>
 {
@@ -31,7 +34,7 @@ builder.Services.AddSingleton<TMDbApi>(sp =>
     var config = sp.GetRequiredService<IConfiguration>();
     return new TMDbApi(cache, config);
 });
-builder.Services.AddTransient<MovieService>();
+builder.Services.AddSingleton<MovieService>();
 builder.Services.AddSingleton<RoomService>();
 builder.Services.AddSingleton(new DelayedActionScheduler(TimeSpan.FromSeconds(30)));
 builder.Services.AddSingleton<GroupTrackerService>();
