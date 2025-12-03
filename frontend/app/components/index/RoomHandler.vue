@@ -22,7 +22,7 @@
 <script lang="ts" setup>
 const router = useRouter();
 const { $roomService, $guestId } = useNuxtApp();
-const roomHandlerPinInput = useTemplateRef("room-handler__pin-input");
+// const roomHandlerPinInput = useTemplateRef("room-handler__pin-input");
 const errorMessage = ref("");
 
 function resetErrorMessage() {
@@ -32,7 +32,8 @@ function resetErrorMessage() {
 async function tryJoiningRoom(id: string) {
   const room = await $roomService.signToRoom(id, $guestId);
   if (!room) {
-    roomHandlerPinInput.value?.clear();
+    // roomHandlerPinInput.value?.clear();
+    // setTimeout(() => (errorMessage.value = "Wrong code or full"), 0);
     errorMessage.value = "Wrong code or full";
     return;
   }
