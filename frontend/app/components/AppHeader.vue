@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <h3>Watch Match</h3>
+    <nuxt-link to="/"><h3>Watch Match</h3></nuxt-link>
   </header>
 </template>
 

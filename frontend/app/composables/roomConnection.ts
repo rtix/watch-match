@@ -20,10 +20,23 @@ export function useRoomConnection(roomId: string) {
     connection.value.on("ReceiveMessage", (msg) => {
       console.log(msg);
     });
+
     connection.value.on("ReceiveError", (err) => {
       console.log(err);
     });
   });
+
+  async function requestMovies() {
+    return await connection.value?.invoke("RequestMovies");
+  }
+
+  function sendLike(movieId: number) {
+    connection.value?.invoke("SendLike", movieId);
+  }
+
+  function sendDislike(movieId: number) {
+    connection.value?.invoke("SendLike", movieId);
+  }
 
   onUnmounted(async () => {
     if (connection.value) {
@@ -31,5 +44,5 @@ export function useRoomConnection(roomId: string) {
     }
   });
 
-  return { connection };
+  return { connection, requestMovies, sendLike, sendDislike };
 }
