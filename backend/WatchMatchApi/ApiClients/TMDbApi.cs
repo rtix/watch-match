@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using System.Net;
 using TMDbLib.Client;
 using TMDbLib.Objects.Discover;
 using TMDbLib.Objects.General;
@@ -8,24 +9,17 @@ using WatchMatchApi.Exceptions;
 
 namespace WatchMatchApi.ApiClients
 {
-    public class TMDbApi
+    public class TMDbApi(IMemoryCache cache, TMDbClient client, TimeSpan cacheExpirationTime)
     {
-        private readonly IMemoryCache _cache;
-        private readonly TMDbClient _client;
-        private readonly TimeSpan _cacheExpirationTime = TimeSpan.FromDays(1);
+        private readonly IMemoryCache _cache = cache;
+        private readonly TMDbClient _client = client;
+        private readonly TimeSpan _cacheExpirationTime = cacheExpirationTime;
 
         public const int MAX_PAGES_LIMIT = 500;
 
-        public TMDbApi(IMemoryCache cache, IConfiguration config)
-            :this(cache, config, TimeSpan.FromDays(1))
+        public TMDbApi(IMemoryCache cache, TMDbClient client)
+            :this(cache, client, TimeSpan.FromDays(1))
         {}
-
-        public TMDbApi(IMemoryCache cache, IConfiguration config, TimeSpan cacheExpirationTime)
-        {
-            _cache = cache;
-            _cacheExpirationTime = cacheExpirationTime;
-            _client = new TMDbClient(config["TMDB:API_KEY"]);
-        }
 
         public DiscoverMovie CreateDiscoverQuery()
         {

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Caching.Memory;
+using System.Net;
+using TMDbLib.Client;
 using WatchMatchApi.ApiClients;
 using WatchMatchApi.Hubs;
 using WatchMatchApi.Services;
@@ -28,12 +29,31 @@ builder.Services.AddSignalR(options =>
     options.AddFilter<RoomHubFilter>();
 });
 
-builder.Services.AddSingleton<TMDbApi>(sp =>
+builder.Services.AddSingleton(sp =>
 {
-    var cache = sp.GetRequiredService<IMemoryCache>();
     var config = sp.GetRequiredService<IConfiguration>();
-    return new TMDbApi(cache, config);
+    var apiKey = config["TMDB:API_KEY"];
+
+    string? proxyUrl =
+        config["TMDB:PROXY"] ??
+        Environment.GetEnvironmentVariable("TMDB_PROXY");
+
+    IWebProxy? proxy = null;
+    if (!string.IsNullOrWhiteSpace(proxyUrl))
+    {
+        proxy = new WebProxy(proxyUrl)
+        {
+            BypassProxyOnLocal = true
+        };
+    }
+
+    return new TMDbClient(
+        apiKey,
+        proxy: proxy
+    );
 });
+
+builder.Services.AddSingleton<TMDbApi>();
 builder.Services.AddSingleton<MovieService>();
 builder.Services.AddSingleton<RoomService>();
 builder.Services.AddSingleton(new DelayedActionScheduler(TimeSpan.FromSeconds(30)));
