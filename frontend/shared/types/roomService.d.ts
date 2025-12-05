@@ -6,6 +6,7 @@ export interface IRoomService {
 export interface IMovie {
   id: int;
   title: string;
+  posterPath: string;
 }
 
 export interface IMovieLikesDTO {

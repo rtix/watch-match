@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     public: {
       mockBackend: process.env.MOCK_BACKEND === "true",
       apiBase: process.env.API_BASE || "http://localhost:5099",
+      tmdbImageBase: "https://image.tmdb.org/t/p/",
     },
   },
   colorMode: {
