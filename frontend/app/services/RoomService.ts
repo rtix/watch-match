@@ -22,7 +22,7 @@ export class RoomService implements IRoomService {
 
   async signToRoom(roomId: string, userId: string) {
     try {
-      await $fetch<IRoom>(
+      await $fetch(
         `${useRuntimeConfig().public.apiBase}/api/room/${roomId}/users`,
         {
           method: "PATCH",
