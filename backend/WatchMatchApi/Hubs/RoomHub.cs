@@ -13,12 +13,19 @@ namespace WatchMatchApi.Hubs
         public const string TryLater = "Try later";
     }
 
+    public class MovieWithNumber
+    {
+        public required Movie Movie { get; set; }
+        public required int Number { get; set; }
+    }
+
     public interface IRoomClient
     {
         Task ReceiveMessage(string message);
         Task ReceiveError(string message);
 
         Task RecieveMovies(List<Movie> movies);
+        Task RecieveLikes(List<MovieLikesDTO> likes);
     }
 
     public class RoomHub(RoomService roomService, MovieService movieService) : Hub<IRoomClient>
@@ -58,8 +65,20 @@ namespace WatchMatchApi.Hubs
                 return;
             }
 
-            await Clients.Caller.ReceiveMessage(room.Id);
+            await Groups.AddToGroupAsync(ConnectionId, RoomId);
+            await Clients.Caller.RecieveLikes(await GetFullMoviesByLikes(room));
             await base.OnConnectedAsync();
+        }
+
+        private async Task<List<MovieLikesDTO>> GetFullMoviesByLikes(Room room)
+        {
+            var tasks = room.GetMoviesByLikes().Select(async x =>
+            {
+                var result = await _movieService.GetMovieAsync(x.MovieId);
+                return new MovieLikesDTO { Movie = result, Likes = x.LikeCount };
+            });
+
+            return (await Task.WhenAll(tasks)).ToList();
         }
 
         private async void AbortConnection(string message)
@@ -87,6 +106,7 @@ namespace WatchMatchApi.Hubs
                 return;
             }
             room.LikeMovie(UserId, movieId);
+            await Clients.Group(RoomId).RecieveLikes(await GetFullMoviesByLikes(room));
         }
 
         public async void SendDislike(int movieId)
