@@ -1,11 +1,11 @@
 <template>
   <div class="room-handler">
     <nuxt-link to="/room-creator">
-      <ui-button>Create</ui-button>
+      <button>Create</button>
     </nuxt-link>
     <ui-modal>
       <template #trigger>
-        <ui-button>Join</ui-button>
+        <button>Join</button>
       </template>
       <ui-pin-input
         ref="room-handler__pin-input"
@@ -46,5 +46,10 @@ async function tryJoiningRoom(id: string) {
   display: flex;
   gap: 1rem;
   margin-inline-start: 1rem;
+}
+
+.room-handler__error-message {
+  text-align: center;
+  color: crimson;
 }
 </style>

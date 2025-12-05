@@ -1,7 +1,7 @@
 <template>
-  <PinInput.RootProvider :value="pinInput">
-    <PinInput.Label>
-      <h2>Enter room code:</h2>
+  <PinInput.RootProvider :value="pinInput" class="pin-input">
+    <PinInput.Label class="pin-input__label">
+      <h2 style="margin: 0">Enter room code:</h2>
     </PinInput.Label>
     <PinInput.Control class="pin-input__control">
       <PinInput.Input
@@ -42,11 +42,17 @@ defineExpose({
 .pin-input__control {
   display: flex;
   justify-content: center;
+  gap: 0.25rem;
+}
+
+.pin-input {
+  text-align: center;
 }
 
 .pin-input__input {
-  width: 2rem;
-  font-size: 2rem;
+  width: var(--spacing-lg);
+  font-size: var(--text-xl);
+  border: 1px solid var(--color-text);
   text-align: center;
 }
 </style>

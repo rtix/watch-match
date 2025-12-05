@@ -13,7 +13,7 @@ defineProps<{ checked?: boolean }>();
   background: none;
   border: none;
   font-size: inherit;
-  display: flex;
+  display: inline-flex;
   color: inherit;
   align-items: center;
   justify-content: center;
@@ -22,21 +22,21 @@ defineProps<{ checked?: boolean }>();
 }
 
 .button[checked="true"] {
-  background-color: var(--accent-color);
+  background-color: var(--color-accent);
   color: var(--background-color);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .button:hover {
     cursor: pointer;
-    background-color: var(--text-color);
-    color: var(--background-color);
+    background-color: var(--color-accent);
+    color: var(--color-background);
   }
 }
 
 .button:active {
   cursor: pointer;
-  background-color: var(--accent-color);
-  color: var(--background-color);
+  background-color: var(--color-accent);
+  color: var(--color-background);
 }
 </style>

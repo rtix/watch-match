@@ -1,10 +1,17 @@
-:root {
-  --text-color--hsl: 210, 40%, 94%;
-  --text-color: hsl(var(--text-color--hsl));
+.light {
+  --color-text: hsl(171, 47%, 3%);
+  --color-background: hsl(180, 40%, 98%);
+  --color-primary: hsl(175, 47%, 54%);
+  --color-primary--dark: hsl(175, 47%, 34%);
+  --color-secondary: hsl(354, 47%, 73%);
+  --color-accent: hsl(50, 47%, 63%);
+}
 
-  --background-color--hsl: 214, 28%, 5%;
-  --background-color: hsl(var(--background-color--hsl));
-
-  --accent-color--hsl: 53, 38%, 58%;
-  --accent-color: hsl(var(--accent-color--hsl));
+.dark {
+  --color-text: hsl(171, 47%, 97%);
+  --color-background: hsl(180, 40%, 2%);
+  --color-primary: hsl(175, 47%, 46%);
+  --color-primary--dark: hsl(175, 47%, 26%);
+  --color-secondary: hsl(354, 47%, 27%);
+  --color-accent: hsl(50, 47%, 37%);
 }

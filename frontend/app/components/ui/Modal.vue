@@ -60,7 +60,7 @@ onKeyStroke(
   width: 100vw;
   height: 100dvh;
 
-  background-color: hsla(var(--background-color--hsl), 0.5);
+  background-color: hsla(0, 0%, 0%, 0.5);
 
   display: flex;
   justify-content: center;
@@ -69,5 +69,7 @@ onKeyStroke(
 
 .modal {
   position: relative;
+  background-color: var(--color-background);
+  padding: var(--spacing-md);
 }
 </style>

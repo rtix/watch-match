@@ -1,6 +1,8 @@
 <template>
   <header class="header">
-    <nuxt-link to="/"><h3>Watch Match</h3></nuxt-link>
+    <nuxt-link to="/">
+      <span class="header__title">Watch Match</span>
+    </nuxt-link>
   </header>
 </template>
 
@@ -8,7 +10,16 @@
 
 <style>
 .header {
-  text-align: center;
-  border-bottom: 1px black solid;
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  padding-block: 0.5rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.2), #00000000);
+}
+
+.header__title {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 </style>

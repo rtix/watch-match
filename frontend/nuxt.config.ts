@@ -2,12 +2,16 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxt/eslint", "@nuxt/icon", "@vueuse/nuxt"],
+  modules: ["@nuxtjs/color-mode", "@nuxt/eslint", "@nuxt/icon", "@vueuse/nuxt"],
   css: ["modern-normalize/modern-normalize.css", "~/assets/css/main.css"],
   runtimeConfig: {
     public: {
       mockBackend: process.env.MOCK_BACKEND === "true",
       apiBase: process.env.API_BASE || "http://localhost:5099",
     },
+  },
+  colorMode: {
+    classSuffix: "", // safe default
+    fallback: "light", // safe default
   },
 });
