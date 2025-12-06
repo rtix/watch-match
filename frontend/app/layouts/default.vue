@@ -1,10 +1,9 @@
 <template>
   <div :style="maxHeightStyle" class="layout">
-    <app-header />
+    <app-header style="width: 100%" />
     <div class="content">
       <slot />
     </div>
-    <!-- <app-footer/> -->
   </div>
 </template>
 
@@ -21,30 +20,27 @@ const maxHeightStyle = computed(() =>
 .layout {
   display: flex;
   flex-direction: column;
+  align-items: center;
+
   min-height: 100dvh;
 }
 
 .content {
   flex: 1;
+  width: 100%;
   max-width: 900px;
-  margin: 0 auto;
-  padding: 0 0.5rem;
+  padding: 0 var(--spacing-sm);
 }
 
 @media (max-width: 600px) {
-  .content {
-    /* padding: 0 15px; */
-  }
 }
 
-/* Medium devices (tablets) */
 @media (min-width: 601px) and (max-width: 900px) {
   .content {
     max-width: 700px;
   }
 }
 
-/* Large devices (desktop) */
 @media (min-width: 901px) {
   .content {
     max-width: 900px;
