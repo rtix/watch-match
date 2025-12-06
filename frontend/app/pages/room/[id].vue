@@ -45,6 +45,10 @@
 import { Tabs } from "@ark-ui/vue/tabs";
 import type { IMovie } from "~~/shared/types/roomService";
 
+definePageMeta({
+  layoutMeta: { limitHeightToViewport: true },
+});
+
 const route = useRoute();
 
 const roomId = Array.isArray(route.params.id)

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :style="maxHeightStyle">
     <app-header />
     <div class="content">
       <slot />
@@ -8,7 +8,14 @@
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const route = useRoute();
+const limitHeight = route.meta.layoutMeta.limitHeightToViewport ?? false;
+
+const maxHeightStyle = computed(() =>
+  limitHeight ? { maxHeight: "100dvh", overflow: "hidden" } : {}
+);
+</script>
 
 <style scoped>
 .content {
