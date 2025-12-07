@@ -81,9 +81,23 @@ function dislike() {
   movies.value.shift();
 }
 
+function preloadImage(url: string) {
+  const img = new Image();
+  img.src = url;
+}
+
 watch(
   () => movies.value.length,
   (len) => {
+    const moviesToPreload = [movies.value[1], movies.value[2]];
+    moviesToPreload.forEach((m) => {
+      if (m) {
+        preloadImage(
+          `${useRuntimeConfig().public.tmdbImageBase}/original${m.posterPath}`
+        );
+      }
+    });
+
     if (len < 6) requestMore();
   },
   { immediate: true }
