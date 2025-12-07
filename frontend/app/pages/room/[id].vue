@@ -14,6 +14,7 @@
         class="room__more-info"
         @click="isMoreInfoState = !isMoreInfoState"
       >
+        <h1>{{ currentMovie?.title }}</h1>
         {{ currentMovie }}
       </div>
     </div>
@@ -33,8 +34,8 @@
 
     <div class="room__controls">
       <button @click="isScoreState = !isScoreState">Score</button>
-      <button @click="like()">Like</button>
-      <button @click="dislike()">Dislike</button>
+      <button v-show="!isScoreState" @click="like()">Like</button>
+      <button v-show="!isScoreState" @click="dislike()">Dislike</button>
     </div>
   </div>
 </template>
@@ -79,11 +80,6 @@ function dislike() {
   }
   sendDislike(currentMovie.value.id);
   movies.value.shift();
-}
-
-function preloadImage(url: string) {
-  const img = new Image();
-  img.src = url;
 }
 
 watch(
