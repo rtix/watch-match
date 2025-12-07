@@ -1,66 +1,128 @@
 <template>
-  <div>
-    <h1>Room ID: {{ roomId }}</h1>
-    <Tabs.Root v-model="tabState">
-      <Tabs.List>
-        <Tabs.Trigger value="discover">Discover</Tabs.Trigger>
-        <Tabs.Trigger value="results">Results</Tabs.Trigger>
-      </Tabs.List>
+  <div class="room">
+    <div v-show="!isScoreState" class="room__discover room-page">
+      <img
+        v-show="!isMoreInfoState"
+        class="room__poster"
+        :src="`${useRuntimeConfig().public.tmdbImageBase}/original${
+          currentMovie?.posterPath
+        }`"
+        @click="isMoreInfoState = !isMoreInfoState"
+      />
+      <div
+        v-show="isMoreInfoState"
+        class="room__more-info"
+        @click="isMoreInfoState = !isMoreInfoState"
+      >
+        {{ currentMovie }}
+      </div>
+    </div>
 
-      <Tabs.Content value="discover">
-        <button @click="requestMore">Request movies</button>
-        <p v-for="m in movies" :key="m.title">
-          <img
-            :src="`${useRuntimeConfig().public.tmdbImageBase}/original${
-              m.posterPath
-            }`"
-            alt="Movie Poster"
-            style="height: 5rem"
-          />
-          {{ m.title }}
-          <button @click="sendLike(m.id)">❤︎</button>
-          <button style="margin-left: 0.25rem" @click="sendDislike(m.id)">
-            Dislike
-          </button>
-        </p>
-      </Tabs.Content>
+    <div v-show="isScoreState" class="room__score room-page">
+      <div v-for="m in likes" :key="m.movie.id">
+        <img
+          :src="`${useRuntimeConfig().public.tmdbImageBase}/original${
+            m.movie.posterPath
+          }`"
+          alt="Movie Poster"
+          style="height: 5rem"
+        />
+        {{ m.movie.title }} {{ m.likes }}
+      </div>
+    </div>
 
-      <Tabs.Content value="results">
-        <div v-for="m in likes" :key="m.movie.id">
-          <img
-            :src="`${useRuntimeConfig().public.tmdbImageBase}/original${
-              m.movie.posterPath
-            }`"
-            alt="Movie Poster"
-            style="height: 5rem"
-          />
-          {{ m.movie.title }} {{ m.likes }}
-        </div>
-      </Tabs.Content>
-    </Tabs.Root>
+    <div class="room__controls">
+      <button @click="isScoreState = !isScoreState">Score</button>
+      <button @click="like()">Like</button>
+      <button @click="dislike()">Dislike</button>
+    </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { Tabs } from "@ark-ui/vue/tabs";
-import type { IMovie } from "~~/shared/types/roomService";
-
+<script lang="ts" setup>
 definePageMeta({
   layoutMeta: { limitHeightToViewport: true },
 });
+
+const isMoreInfoState = ref(false);
+const isScoreState = ref(false);
 
 const route = useRoute();
 
 const roomId = Array.isArray(route.params.id)
   ? route.params.id[0] ?? ""
   : route.params.id ?? "";
+
 const { likes, requestMovies, sendLike, sendDislike } =
   useRoomConnection(roomId);
 
 const movies = ref<IMovie[]>([]);
-const tabState = ref("discover");
+const currentMovie = computed(() => movies.value[0] || null);
 
 async function requestMore() {
-  movies.value = await requestMovies();
+  const more = await requestMovies();
+  console.log(more);
+  movies.value.push(...more);
 }
+
+function like() {
+  if (currentMovie.value === null) {
+    return;
+  }
+  sendLike(currentMovie.value.id);
+  movies.value.shift();
+}
+
+function dislike() {
+  if (currentMovie.value === null) {
+    return;
+  }
+  sendDislike(currentMovie.value.id);
+  movies.value.shift();
+}
+
+watch(
+  () => movies.value.length,
+  (len) => {
+    if (len < 6) requestMore();
+  },
+  { immediate: true }
+);
 </script>
+
+<style scoped>
+.room {
+  flex: 1;
+  position: relative;
+}
+
+.room__controls {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.room-page {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
+
+.room__discover {
+}
+
+.room__poster {
+  cursor: pointer;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+.room__more-info {
+  min-height: 100%;
+  cursor: pointer;
+}
+</style>

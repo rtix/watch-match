@@ -27,6 +27,7 @@ const maxHeightStyle = computed(() =>
 
 .content {
   flex: 1;
+  display: flex;
   width: 100%;
   max-width: 900px;
   padding: 0 var(--spacing-sm);
@@ -43,7 +44,7 @@ const maxHeightStyle = computed(() =>
 
 @media (min-width: 901px) {
   .content {
-    max-width: 900px;
+    max-width: 1200px;
   }
 }
 </style>

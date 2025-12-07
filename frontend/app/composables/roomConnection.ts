@@ -7,6 +7,11 @@ export function useRoomConnection(roomId: string) {
   const connection = ref<HubConnection | null>(null);
   const likes = ref<IMovieLikesDTO[]>([]);
 
+  let readyResolve: () => void;
+  const ready = new Promise<void>((resolve) => {
+    readyResolve = resolve;
+  });
+
   onMounted(async () => {
     connection.value = new HubConnectionBuilder()
       .withUrl(
@@ -17,23 +22,28 @@ export function useRoomConnection(roomId: string) {
       )
       .withAutomaticReconnect()
       .build();
-    connection.value.start();
 
-    connection.value.on("ReceiveMessage", (msg) => {
-      console.log(msg);
-    });
-
-    connection.value.on("ReceiveError", (err) => {
-      console.log(err);
-    });
+    await connection.value.start();
+    readyResolve();
 
     connection.value.on("RecieveLikes", (l: IMovieLikesDTO[]) => {
       likes.value = l;
     });
   });
 
+  const requestInProgress = ref(false);
+
   async function requestMovies() {
-    return await connection.value?.invoke("RequestMovies");
+    await ready;
+    if (requestInProgress.value) return [];
+
+    requestInProgress.value = true;
+    try {
+      const movies = await connection.value?.invoke("RequestMovies");
+      return movies || [];
+    } finally {
+      requestInProgress.value = false;
+    }
   }
 
   function sendLike(movieId: number) {
