@@ -34,8 +34,8 @@
 
     <div class="room__controls">
       <button @click="isScoreState = !isScoreState">Score</button>
-      <button v-show="!isScoreState" @click="like()">Like</button>
-      <button v-show="!isScoreState" @click="dislike()">Dislike</button>
+      <button v-show="!isScoreState" @click="react('like')">Like</button>
+      <button v-show="!isScoreState" @click="react('dislike')">Dislike</button>
     </div>
   </div>
 </template>
@@ -66,20 +66,16 @@ async function requestMore() {
   movies.value.push(...more);
 }
 
-function like() {
+function react(like: "like" | "dislike") {
   if (currentMovie.value === null) {
     return;
   }
-  sendLike(currentMovie.value.id);
   movies.value.shift();
-}
-
-function dislike() {
-  if (currentMovie.value === null) {
-    return;
-  }
-  sendDislike(currentMovie.value.id);
-  movies.value.shift();
+  const send = {
+    like: sendLike,
+    dislike: sendDislike,
+  };
+  send[like](currentMovie.value.id);
 }
 
 watch(
