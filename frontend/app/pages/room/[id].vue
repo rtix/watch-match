@@ -36,6 +36,7 @@
       <button @click="isScoreState = !isScoreState">Score</button>
       <button v-show="!isScoreState" @click="react('like')">Like</button>
       <button v-show="!isScoreState" @click="react('dislike')">Dislike</button>
+      <button v-show="!isScoreState" @click="copyRoomId()">Room ID</button>
     </div>
   </div>
 </template>
@@ -76,6 +77,10 @@ function react(like: "like" | "dislike") {
     dislike: sendDislike,
   };
   send[like](currentMovie.value.id);
+}
+
+async function copyRoomId() {
+  await navigator.clipboard.writeText(roomId);
 }
 
 watch(
