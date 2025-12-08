@@ -71,12 +71,12 @@ function react(like: "like" | "dislike") {
   if (currentMovie.value === null) {
     return;
   }
-  movies.value.shift();
   const send = {
     like: sendLike,
     dislike: sendDislike,
   };
   send[like](currentMovie.value.id);
+  movies.value.shift();
 }
 
 async function copyRoomId() {
