@@ -1,21 +1,24 @@
 <template>
   <div class="room">
     <div v-show="!isScoreState" class="room__discover room-page">
-      <img
-        v-show="!isMoreInfoState"
-        class="room__poster"
-        :src="`${useRuntimeConfig().public.tmdbImageBase}/original${
-          currentMovie?.posterPath
-        }`"
-        @click="isMoreInfoState = !isMoreInfoState"
-      />
-      <div
-        v-show="isMoreInfoState"
-        class="room__more-info"
-        @click="isMoreInfoState = !isMoreInfoState"
-      >
-        <h1>{{ currentMovie?.title }}</h1>
-        {{ currentMovie }}
+      <ui-spinner v-if="moviesAmount === 0" class="room__spinner" />
+      <div v-else style="width: 100%; height: 100%">
+        <img
+          v-show="!isMoreInfoState"
+          class="room__poster"
+          :src="`${useRuntimeConfig().public.tmdbImageBase}/original${
+            currentMovie?.posterPath
+          }`"
+          @click="isMoreInfoState = !isMoreInfoState"
+        />
+        <div
+          v-show="isMoreInfoState"
+          class="room__more-info"
+          @click="isMoreInfoState = !isMoreInfoState"
+        >
+          <h1>{{ currentMovie?.title }}</h1>
+          {{ currentMovie }}
+        </div>
       </div>
     </div>
 
@@ -26,7 +29,7 @@
             m.movie.posterPath
           }`"
           alt="Movie Poster"
-          style="height: 5rem"
+          style="height: 5rem; display: inline"
         />
         {{ m.movie.title }} {{ m.likes }}
       </div>
@@ -60,6 +63,7 @@ const { likes, requestMovies, sendLike, sendDislike } =
 
 const movies = ref<IMovie[]>([]);
 const currentMovie = computed(() => movies.value[0] || null);
+const moviesAmount = computed(() => movies.value.length || 0);
 
 async function requestMore() {
   const more = await requestMovies();
@@ -135,5 +139,10 @@ watch(
 .room__more-info {
   min-height: 100%;
   cursor: pointer;
+}
+
+.room__spinner {
+  width: 100%;
+  height: 100%;
 }
 </style>
