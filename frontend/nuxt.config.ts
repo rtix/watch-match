@@ -2,7 +2,13 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxtjs/color-mode", "@nuxt/eslint", "@nuxt/icon", "@vueuse/nuxt"],
+  modules: [
+    "@nuxtjs/color-mode",
+    "@nuxt/eslint",
+    "@nuxt/icon",
+    "@vueuse/nuxt",
+    "@nuxt/image",
+  ],
   css: ["modern-normalize/modern-normalize.css", "~/assets/css/main.css"],
   runtimeConfig: {
     public: {

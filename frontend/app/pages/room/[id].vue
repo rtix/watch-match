@@ -3,12 +3,14 @@
     <div v-show="!isScoreState" class="room__discover room-page">
       <ui-spinner v-if="moviesAmount === 0" class="room__spinner" />
       <div v-else style="width: 100%; height: 100%">
-        <img
+        <NuxtImg
           v-show="!isMoreInfoState"
+          :key="currentMovie?.posterPath"
           class="room__poster"
           :src="`${useRuntimeConfig().public.tmdbImageBase}/original${
             currentMovie?.posterPath
           }`"
+          placeholder="/images/placeholder.jpg"
           @click="isMoreInfoState = !isMoreInfoState"
         />
         <div
