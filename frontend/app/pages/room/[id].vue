@@ -1,30 +1,11 @@
 <template>
   <div class="room">
-    <div v-show="!isScoreState" class="room__discover room-page">
-      <ui-spinner v-if="moviesAmount === 0" class="room__spinner" />
-      <div v-else style="width: 100%; height: 100%">
-        <NuxtImg
-          v-show="!isMoreInfoState"
-          :key="currentMovie?.posterPath"
-          class="room__poster"
-          :src="`${useRuntimeConfig().public.tmdbImageBase}/original${
-            currentMovie?.posterPath
-          }`"
-          placeholder="/images/placeholder.jpg"
-          @click="isMoreInfoState = !isMoreInfoState"
-        />
-        <div
-          v-show="isMoreInfoState"
-          class="room__more-info"
-          @click="isMoreInfoState = !isMoreInfoState"
-        >
-          <h1>{{ currentMovie?.title }}</h1>
-          {{ currentMovie }}
-        </div>
-      </div>
+    <div v-show="!isScoreState" class="room__discover room__page">
+      <ui-spinner v-if="currentMovie === null" class="room__spinner" />
+      <movie-viewer v-else :movie="currentMovie" class="room__movie-viewer" />
     </div>
 
-    <div v-show="isScoreState" class="room__score room-page">
+    <div v-show="isScoreState" class="room__score room__page">
       <div v-for="m in likes" :key="m.movie.id">
         <img
           :src="`${useRuntimeConfig().public.tmdbImageBase}/original${
@@ -51,9 +32,7 @@ definePageMeta({
   layoutMeta: { limitHeightToViewport: true },
 });
 
-const isMoreInfoState = ref(false);
 const isScoreState = ref(false);
-
 const route = useRoute();
 
 const roomId = Array.isArray(route.params.id)
@@ -65,15 +44,13 @@ const { likes, requestMovies, sendLike, sendDislike } =
 
 const movies = ref<IMovie[]>([]);
 const currentMovie = computed(() => movies.value[0] || null);
-const moviesAmount = computed(() => movies.value.length || 0);
 
 async function requestMore() {
   const more = await requestMovies();
-  console.log(more);
   movies.value.push(...more);
 }
 
-function react(like: "like" | "dislike") {
+function react(reactionType: "like" | "dislike") {
   if (currentMovie.value === null) {
     return;
   }
@@ -81,7 +58,7 @@ function react(like: "like" | "dislike") {
     like: sendLike,
     dislike: sendDislike,
   };
-  send[like](currentMovie.value.id);
+  send[reactionType](currentMovie.value.id);
   movies.value.shift();
 }
 
@@ -120,7 +97,7 @@ watch(
   flex-direction: column;
 }
 
-.room-page {
+.room__page {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -144,6 +121,11 @@ watch(
 }
 
 .room__spinner {
+  width: 100%;
+  height: 100%;
+}
+
+.room__movie-viewer {
   width: 100%;
   height: 100%;
 }
