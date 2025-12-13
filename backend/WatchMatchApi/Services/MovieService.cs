@@ -1,5 +1,6 @@
 ﻿using TMDbLib.Objects.Movies;
 using WatchMatchApi.ApiClients;
+using WatchMatchApi.DTOs;
 
 namespace WatchMatchApi.Services
 {
@@ -8,12 +9,12 @@ namespace WatchMatchApi.Services
         private readonly TMDbApi _api = tmdbApi;
         public const int DEFAULT_DISCOVER_SIZE = 10;
 
-        public async Task<Movie> GetMovieAsync(int movieId)
+        public async Task<MovieDto> GetMovieAsync(int movieId)
         {
-            return await _api.GetMovieAsync(movieId);
+            return MovieMapper.ToDto(await _api.GetMovieAsync(movieId));
         }
 
-        public async Task<List<Movie>> DiscoverRandomMoviesAsync(int moviesCount=DEFAULT_DISCOVER_SIZE)
+        public async Task<List<MovieDto>> DiscoverRandomMoviesAsync(int moviesCount=DEFAULT_DISCOVER_SIZE)
         {
             Movie[] randomMovies = new Movie[moviesCount];
             var maxPages = Math.Min(_api.DiscoverMoviesAsync(1).Result.TotalPages, TMDbApi.MAX_PAGES_LIMIT);
@@ -26,8 +27,8 @@ namespace WatchMatchApi.Services
                 var numberOfItemsInPage = randomPage.Result.Results.Count;
                 var randomItemNumber = random.Next(0, numberOfItemsInPage);
                 var randomItem = randomPage.Result.Results[randomItemNumber];
-                var fullMovieData = await _api.GetMovieAsync(randomItem.Id, MovieMethods.Videos);
-                return fullMovieData;
+                var fullMovieData = await _api.GetMovieAsync(randomItem.Id, MovieMethods.Videos | MovieMethods.Images);
+                return MovieMapper.ToDto(fullMovieData);
             });
 
             return (await Task.WhenAll(tasks)).ToList();

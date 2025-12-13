@@ -7,18 +7,10 @@ namespace WatchMatchApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoomController(RoomService roomService, ILogger<RoomController> logger, MovieService movieService) : ControllerBase
+    public class RoomController(RoomService roomService, ILogger<RoomController> logger) : ControllerBase
     {
         private readonly RoomService _roomService = roomService;
         private readonly ILogger<RoomController> _logger = logger;
-        private readonly MovieService _movieService = movieService;
-
-        [HttpGet]
-        public async Task<List<Movie>> Get() 
-        {
-            var movies = await _movieService.DiscoverRandomMoviesAsync();
-            return movies;
-        }
 
         [HttpPatch("{roomId}/users")]
         public IActionResult Patch(string roomId, [FromBody] string userId)

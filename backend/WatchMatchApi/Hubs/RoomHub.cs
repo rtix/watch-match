@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using TMDbLib.Objects.Movies;
+using WatchMatchApi.DTOs;
 using WatchMatchApi.Exceptions;
 using WatchMatchApi.Models;
 using WatchMatchApi.Services;
@@ -13,19 +14,13 @@ namespace WatchMatchApi.Hubs
         public const string TryLater = "Try later";
     }
 
-    public class MovieWithNumber
-    {
-        public required Movie Movie { get; set; }
-        public required int Number { get; set; }
-    }
-
     public interface IRoomClient
     {
         Task ReceiveMessage(string message);
         Task ReceiveError(string message);
 
         Task RecieveMovies(List<Movie> movies);
-        Task RecieveLikes(List<MovieLikesDTO> likes);
+        Task RecieveLikes(List<MovieLikesDto> likes);
     }
 
     public class RoomHub(RoomService roomService, MovieService movieService) : Hub<IRoomClient>
@@ -70,12 +65,12 @@ namespace WatchMatchApi.Hubs
             await base.OnConnectedAsync();
         }
 
-        private async Task<List<MovieLikesDTO>> GetFullMoviesByLikes(Room room)
+        private async Task<List<MovieLikesDto>> GetFullMoviesByLikes(Room room)
         {
             var tasks = room.GetMoviesByLikes().Select(async x =>
             {
                 var result = await _movieService.GetMovieAsync(x.MovieId);
-                return new MovieLikesDTO { Movie = result, Likes = x.LikeCount };
+                return new MovieLikesDto { Movie = result, Likes = x.LikeCount };
             });
 
             return (await Task.WhenAll(tasks)).ToList();
@@ -120,7 +115,7 @@ namespace WatchMatchApi.Hubs
             room.ReactToMovie(UserId, movieId);
         }
 
-        public async Task<List<Movie>> RequestMovies()
+        public async Task<List<MovieDto>> RequestMovies()
         {
             var room = _roomService.TryGetSignRoom(RoomId, UserId);
             if (room == null)
