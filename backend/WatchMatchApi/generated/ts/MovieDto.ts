@@ -9,7 +9,7 @@ import { KeywordsContainer } from "./KeywordsContainer";
 import { ResultContainer } from "./ResultContainer";
 import { Video } from "./Video";
 
-export class MovieDto {
+export interface MovieDto {
   adult: boolean;
   backdropPath: string;
   budget: number;

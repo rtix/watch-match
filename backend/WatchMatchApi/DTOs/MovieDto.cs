@@ -4,7 +4,7 @@ using TypeGen.Core.TypeAnnotations;
 
 namespace WatchMatchApi.DTOs
 {
-    [ExportTsClass]
+    [ExportTsInterface]
     public sealed class MovieDto
     {
         required public bool Adult { get; init; }
