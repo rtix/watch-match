@@ -4,5 +4,6 @@
   "tabLength": 2,
   "fileNameConverters": [],
   "clearOutputDirectory": true,
-  "exportTypesAsInterfacesByDefault":  true
+  "exportTypesAsInterfacesByDefault": true,
+  "useImportType":  true
 }

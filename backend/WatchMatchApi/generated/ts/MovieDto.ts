@@ -3,11 +3,11 @@
  * Any changes made to this file can be lost when this file is regenerated.
  */
 
-import { Genre } from "./Genre";
-import { Images } from "./Images";
-import { KeywordsContainer } from "./KeywordsContainer";
-import { ResultContainer } from "./ResultContainer";
-import { Video } from "./Video";
+import type { Genre } from "./Genre";
+import type { Images } from "./Images";
+import type { KeywordsContainer } from "./KeywordsContainer";
+import type { ResultContainer } from "./ResultContainer";
+import type { Video } from "./Video";
 
 export interface MovieDto {
   adult: boolean;

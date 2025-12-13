@@ -14,7 +14,7 @@
   </ItemGroup>
 
 	<Target Name="TypeGen" AfterTargets="Build">
-		<Exec Command="dotnet tool run dotnet-typegen generate" />
+		<Exec Command="dotnet tool run dotnet-typegen generate" WorkingDirectory="$(ProjectDir)" />
 	</Target>
 
 </Project>

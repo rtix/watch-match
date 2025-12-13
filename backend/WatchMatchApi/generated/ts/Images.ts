@@ -3,7 +3,7 @@
  * Any changes made to this file can be lost when this file is regenerated.
  */
 
-import { ImageData } from "./ImageData";
+import type { ImageData } from "./ImageData";
 
 export interface Images {
   backdrops: ImageData[];
