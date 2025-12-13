@@ -2,6 +2,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import type { HubConnection } from "@microsoft/signalr";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import type { IMovieLikesDTO } from "~~/shared/types/roomService";
+import type { MovieDto } from "~~/shared/types/generated/MovieDto";
 
 export function useRoomConnection(roomId: string) {
   const connection = ref<HubConnection | null>(null);
@@ -33,13 +34,15 @@ export function useRoomConnection(roomId: string) {
 
   const requestInProgress = ref(false);
 
-  async function requestMovies() {
+  async function requestMovies(): Promise<MovieDto[]> {
     await ready;
     if (requestInProgress.value) return [];
 
     requestInProgress.value = true;
     try {
-      const movies = await connection.value?.invoke("RequestMovies");
+      const movies = await connection.value?.invoke<MovieDto[]>(
+        "RequestMovies"
+      );
       return movies || [];
     } finally {
       requestInProgress.value = false;

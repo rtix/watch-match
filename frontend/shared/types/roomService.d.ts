@@ -3,13 +3,7 @@ export interface IRoomService {
   signToRoom(roomId: string, userId: string): Promise<boolean>;
 }
 
-export interface IMovie {
-  id: int;
-  title: string;
-  posterPath: string;
-}
-
 export interface IMovieLikesDTO {
-  movie: IMovie;
+  movie: MovieDto;
   likes: number;
 }

@@ -22,9 +22,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { IMovie } from "~~/shared/types/roomService";
-
-defineProps<{ movie: IMovie }>();
+import type { MovieDto } from "~~/shared/types/generated/MovieDto";
+defineProps<{ movie: MovieDto }>();
 const isMoreInfoState = ref(false);
 </script>
 

@@ -28,6 +28,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { MovieDto } from "~~/shared/types/generated/MovieDto";
+
 definePageMeta({
   layoutMeta: { limitHeightToViewport: true },
 });
@@ -42,7 +44,7 @@ const roomId = Array.isArray(route.params.id)
 const { likes, requestMovies, sendLike, sendDislike } =
   useRoomConnection(roomId);
 
-const movies = ref<IMovie[]>([]);
+const movies = ref<MovieDto[]>([]);
 const currentMovie = computed(() => movies.value[0] || null);
 
 async function requestMore() {
