@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using System.Net;
 using TMDbLib.Client;
 using TMDbLib.Objects.Discover;
 using TMDbLib.Objects.General;

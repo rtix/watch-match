@@ -1,6 +1,4 @@
-﻿using TMDbLib.Objects.Movies;
-
-namespace WatchMatchApi.DTOs
+﻿namespace WatchMatchApi.DTOs
 {
     public sealed class MovieLikesDto
     {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using TMDbLib.Client;
 using WatchMatchApi.ApiClients;
 using WatchMatchApi.Services;
 
@@ -22,7 +23,8 @@ namespace WatchMatchApi.Tests.Integration.Services
         [Fact]
         public async Task DiscoverRandomMovies_ReturnsMovieResults()
         {
-            var tmdbApi = new TMDbApi(new MemoryCache(new MemoryCacheOptions()), _config);
+            var tmdbApi = new TMDbApi(new MemoryCache(new MemoryCacheOptions()), 
+                                      new TMDbClient(_config["TMDB:API_KEY"]));
             var service = new MovieService(tmdbApi);
             const int numberOfMovies = 5;
 

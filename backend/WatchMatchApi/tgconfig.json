@@ -1,0 +1,8 @@
+{
+  "csNullableTranslation": "optional",
+  "outputPath": "./generated/ts",
+  "tabLength": 2,
+  "fileNameConverters": [],
+  "clearOutputDirectory": true,
+  "exportTypesAsInterfacesByDefault":  true
+}
