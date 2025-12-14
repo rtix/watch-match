@@ -46,6 +46,10 @@ const posterPath = computed(
 </script>
 
 <style scoped>
+.movie-flip-card {
+  display: flex;
+}
+
 .movie-flip-card__poster {
   cursor: pointer;
   object-fit: contain;
