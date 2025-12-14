@@ -2,7 +2,11 @@
   <div class="room">
     <div v-show="!isScoreState" class="room__discover room__page">
       <ui-spinner v-if="currentMovie === null" class="room__spinner" />
-      <movie-viewer v-else :movie="currentMovie" class="room__movie-viewer" />
+      <movie-flip-card
+        v-else
+        :movie="currentMovie"
+        class="room__movie-viewer"
+      />
     </div>
 
     <div v-show="isScoreState" class="room__score room__page">
