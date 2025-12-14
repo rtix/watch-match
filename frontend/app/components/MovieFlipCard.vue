@@ -4,9 +4,7 @@
       v-show="!isMoreInfoState"
       :key="movie?.posterPath"
       class="movie-flip-card__poster"
-      :src="`${useRuntimeConfig().public.tmdbImageBase}/original${
-        movie?.posterPath
-      }`"
+      :src="posterPath"
       placeholder="/images/placeholder.jpg"
       @click="isMoreInfoState = !isMoreInfoState"
     />
@@ -38,8 +36,13 @@
 
 <script lang="ts" setup>
 import type { MovieDto } from "~~/shared/types/generated/MovieDto";
-defineProps<{ movie: MovieDto }>();
+const { movie } = defineProps<{ movie: MovieDto }>();
 const isMoreInfoState = ref(false);
+const posterPath = computed(
+  () =>
+    movie.posterPath &&
+    `${useRuntimeConfig().public.tmdbImageBase}/original${movie.posterPath}`
+);
 </script>
 
 <style scoped>

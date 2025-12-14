@@ -77,7 +77,7 @@ watch(
   (len) => {
     const moviesToPreload = [movies.value[1], movies.value[2]];
     moviesToPreload.forEach((m) => {
-      if (m) {
+      if (m && m.posterPath) {
         preloadImage(
           `${useRuntimeConfig().public.tmdbImageBase}/original${m.posterPath}`
         );
