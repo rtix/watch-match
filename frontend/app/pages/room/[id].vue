@@ -11,11 +11,14 @@
 
     <div v-show="isScoreState" class="room__score room__page">
       <div v-for="m in likes" :key="m.movie.id">
-        <img
-          :src="`${useRuntimeConfig().public.tmdbImageBase}/original${
-            m.movie.posterPath
-          }`"
-          alt="Movie Poster"
+        <NuxtImg
+          :src="
+            m.movie.posterPath &&
+            `${useRuntimeConfig().public.tmdbImageBase}/original${
+              m.movie.posterPath
+            }`
+          "
+          placeholder="/images/placeholder.jpg"
           style="height: 5rem; display: inline"
         />
         {{ m.movie.title }} {{ m.likes }}
