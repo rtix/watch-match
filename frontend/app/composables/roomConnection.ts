@@ -1,12 +1,12 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import type { HubConnection } from "@microsoft/signalr";
 import { HubConnectionBuilder } from "@microsoft/signalr";
-import type { IMovieLikesDTO } from "~~/shared/types/roomService";
+import type { MovieLikesDto } from "~~/shared/types/generated/MovieLikesDto";
 import type { MovieDto } from "~~/shared/types/generated/MovieDto";
 
 export function useRoomConnection(roomId: string) {
   const connection = ref<HubConnection | null>(null);
-  const likes = ref<IMovieLikesDTO[]>([]);
+  const likes = ref<MovieLikesDto[]>([]);
 
   let readyResolve: () => void;
   const ready = new Promise<void>((resolve) => {
@@ -27,7 +27,7 @@ export function useRoomConnection(roomId: string) {
     await connection.value.start();
     readyResolve();
 
-    connection.value.on("RecieveLikes", (l: IMovieLikesDTO[]) => {
+    connection.value.on("RecieveLikes", (l: MovieLikesDto[]) => {
       likes.value = l;
     });
   });
