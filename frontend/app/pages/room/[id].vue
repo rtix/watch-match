@@ -10,19 +10,12 @@
     </div>
 
     <div v-show="isScoreState" class="room__score room__page">
-      <div v-for="m in likes" :key="m.movie.id">
-        <NuxtImg
-          :src="
-            m.movie.posterPath &&
-            `${useRuntimeConfig().public.tmdbImageBase}/original${
-              m.movie.posterPath
-            }`
-          "
-          placeholder="/images/placeholder.jpg"
-          style="height: 5rem; display: inline"
-        />
-        {{ m.movie.title }} {{ m.likes }}
-      </div>
+      <movie-score-card
+        v-for="ml in likes"
+        :key="ml.movie.id"
+        :movie="ml.movie"
+        :likes="ml.likes"
+      />
     </div>
 
     <div class="room__controls">
