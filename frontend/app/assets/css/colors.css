@@ -3,7 +3,7 @@
   --color-text: hsl(171, 47%, 3%);
   --color-background: hsl(180, 40%, 98%);
   --color-primary: hsl(175, 47%, 54%);
-  --color-secondary: hsl(354, 47%, 73%);
+  --color-secondary: hsl(354, 47%, 27%);
   --color-accent: hsl(50, 47%, 63%);
 }
 
@@ -12,6 +12,6 @@
   --color-text: hsl(171, 47%, 97%);
   --color-background: hsl(300, 8%, 8%);
   --color-primary: hsl(175, 47%, 46%);
-  --color-secondary: hsl(354, 47%, 27%);
+  --color-secondary: hsl(354, 47%, 73%);
   --color-accent: hsl(50, 47%, 37%);
 }
